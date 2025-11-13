@@ -1,0 +1,14 @@
+# Core DQN Training Dependencies
+gymnasium[atari,accept-rom-license]>=0.29.0
+stable-baselines3[extra]>=2.2.0
+torch>=2.0.0
+
+# Data Processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Visualization and Logging
+tensorboard>=2.14.0
+
+# Atari Environment Support
+ale-py>=0.9.0
