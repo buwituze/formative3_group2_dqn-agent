@@ -1,0 +1,8 @@
+experiment,status,error,num,lr,gamma,batch_size,epsilon_start,epsilon_end,epsilon_decay,duration_minutes,log_dir,model_dir,best_mean_reward
+1,success,,1,0.001,0.99,32,1.0,0.05,1e-05,80.80903085,benitha_logs/benitha_exp_1_CnnPolicy,benitha_models/benitha_exp_1_CnnPolicy,30.0
+2,success,,2,0.0005,0.95,64,1.0,0.1,5e-05,129.45044101666667,benitha_logs/benitha_exp_2_CnnPolicy,benitha_models/benitha_exp_2_CnnPolicy,35.4
+3,success,,3,0.002,0.97,32,1.0,0.05,2e-05,94.0397548,benitha_logs/benitha_exp_3_CnnPolicy,benitha_models/benitha_exp_3_CnnPolicy,0.0
+4,success,,4,0.0008,0.9,128,1.0,0.05,0.0001,89.91937101666667,benitha_logs/benitha_exp_4_CnnPolicy,benitha_models/benitha_exp_4_CnnPolicy,0.0
+5,success,,5,0.0015,0.99,64,1.0,0.1,0.0001,132.1001175,benitha_logs/benitha_exp_5_CnnPolicy,benitha_models/benitha_exp_5_CnnPolicy,0.0
+6,success,,6,0.0003,0.95,128,1.0,0.05,0.0005,120.27161496666666,benitha_logs/benitha_exp_6_CnnPolicy,benitha_models/benitha_exp_6_CnnPolicy,28.0
+7,success,,7,0.004,0.92,32,1.0,0.1,2e-05,105.47712876666668,benitha_logs/benitha_exp_7_CnnPolicy,benitha_models/benitha_exp_7_CnnPolicy,30.0
