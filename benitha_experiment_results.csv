@@ -6,3 +6,6 @@ experiment,status,error,num,lr,gamma,batch_size,epsilon_start,epsilon_end,epsilo
 5,success,,5,0.0015,0.99,64,1.0,0.1,0.0001,132.1001175,benitha_logs/benitha_exp_5_CnnPolicy,benitha_models/benitha_exp_5_CnnPolicy,0.0
 6,success,,6,0.0003,0.95,128,1.0,0.05,0.0005,120.27161496666666,benitha_logs/benitha_exp_6_CnnPolicy,benitha_models/benitha_exp_6_CnnPolicy,28.0
 7,success,,7,0.004,0.92,32,1.0,0.1,2e-05,105.47712876666668,benitha_logs/benitha_exp_7_CnnPolicy,benitha_models/benitha_exp_7_CnnPolicy,30.0
+8,success,,8,0.0012,0.96,64,1.0,0.05,3e-05,112.71846931666668,benitha_logs/benitha_exp_8_CnnPolicy,benitha_models/benitha_exp_8_CnnPolicy,30.0
+9,success,,9,0.0007,0.93,64,1.0,0.1,1e-05,78.38111835,benitha_logs/benitha_exp_9_CnnPolicy,benitha_models/benitha_exp_9_CnnPolicy,30.0
+10,success,,10,0.003,0.99,32,1.0,0.05,4e-05,93.75242215,benitha_logs/benitha_exp_10_CnnPolicy,benitha_models/benitha_exp_10_CnnPolicy,30.0

@@ -3,3 +3,4 @@ benitha_models/
 benitha_logs/
 __pycache__/
 *logs/
+benitha_dqn_model.zip
