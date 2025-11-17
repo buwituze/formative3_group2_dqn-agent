@@ -155,19 +155,71 @@ Both runs delivered perfect 10.0 ± 0.0 scores using near-identical settings:
 
 ---
 
-### Member 3 - Experiments 21-30
+### Benitha Uwituze Rutagengwa - Experiments 21-30
 
-_(Space reserved for Member 3's analysis)_
+Link to best model performance (for my experiments): [here]()
 
-**Experimental Focus:** _(To be filled by Member 3)_
+#### Experimental Design
+
+I explored 10 different hyperparameter combinations to understand how learning rate, discount factor (gamma), batch size, and exploration strategies affect DQN agent performance in the Atari Bowling environment. Each configuration was trained for 30,000 timesteps using a CNN-based policy network, with the goal of identifying which parameter combinations enable effective learning versus which cause training failure.
 
 #### Hyperparameter Configurations
 
-_(Table to be added by Member 3)_
+| Exp ID | Learning Rate | Gamma | Batch Size | Initial ε | Final ε | ε Decay | Avg Reward |
+| ------ | ------------- | ----- | ---------- | --------- | ------- | ------- | ---------- |
+| 1      | 0.0010        | 0.99  | 32         | 1.0       | 0.05    | 1e-05   | 30.0       |
+| 2      | 0.0005        | 0.95  | 64         | 1.0       | 0.10    | 5e-05   | 35.4       |
+| 3      | 0.0020        | 0.97  | 32         | 1.0       | 0.05    | 2e-05   | 0.0        |
+| 4      | 0.0008        | 0.90  | 128        | 1.0       | 0.05    | 1e-04   | 0.0        |
+| 5      | 0.0015        | 0.99  | 64         | 1.0       | 0.10    | 1e-04   | 0.0        |
+| 6      | 0.0003        | 0.95  | 128        | 1.0       | 0.05    | 5e-04   | 28.0       |
+| 7      | 0.0040        | 0.92  | 32         | 1.0       | 0.10    | 2e-05   | 30.0       |
+| 8      | 0.0012        | 0.96  | 64         | 1.0       | 0.05    | 3e-05   | 30.0       |
+| 9      | 0.0007        | 0.93  | 64         | 1.0       | 0.10    | 1e-05   | 30.0       |
+| 10     | 0.0030        | 0.99  | 32         | 1.0       | 0.05    | 4e-05   | 30.0       |
 
-#### Key Insights
+**Overall Performance:** Average Reward Across All Experiments: 21.34 and Standard Deviation: 14.84
 
-_(Analysis to be added by Member 3)_
+#### Analysis: Understanding Success and Failure
+
+My experiments revealed a clear binary outcome pattern: configurations either achieved decent performance (28-35 points) or failed completely (0 points). This stark divide provided valuable insights into the fragile nature of DQN hyperparameter selection.
+
+**What Made the Successful Configurations Work:**
+
+**Experiment 2 (Best: 35.4 reward)** produced the best performin model, this was achieved because it used the most balanced approach:
+
+- The moderate learning rate (0.0005) allowed gradual policy improvement without destabilizing updates
+- Higher final epsilon (0.1) maintained exploration throughout training, preventing premature convergence
+- Slower epsilon decay (5e-05) gave the agent sufficient time to discover rewarding strategies
+- Medium batch size (64) provided stable gradient estimates while remaining computationally efficient
+
+**Experiments 1, 6, 8, 9, 10 (30.0 reward)** showed consistent performance by:
+
+- Staying within the "safe zone" of learning rates (0.0007-0.0012), avoiding both sluggish learning and instability
+- Using gamma values that balance immediate and future rewards (0.93-0.99)
+- Maintaining enough exploration through appropriate epsilon decay rates
+
+**Why Some Configurations Failed Completely:**
+
+**Experiments 3, 4, 5 (0.0 reward)** produced failure models because:
+
+- **Experiment 3**: Learning rate too high (0.0020) likely caused policy oscillation and prevented convergence
+- **Experiment 4**: Low gamma (0.90) made the agent too short-sighted, failing to learn the sequential nature of Bowling
+- **Experiment 5**: The combination of moderate-high learning rate (0.0015) and fast epsilon decay (1e-04) led to premature convergence on a non-functional policy
+
+Note: The surprising discovery was that **Experiment 7**, despite having the highest learning rate (0.0040), still achieved 30.0 reward. I think that this means that, even when we pair aGGressive learnin rates with very slow exploration decay (2e-05) and small batch size (32) we still can work—though this configuration and likely succeeded.
+
+#### Personal Takeaways
+
+**1. The Fragility of Deep RL:**
+Throuh these experiments, I learned how sensitive DQN training is to hyperparameter choices. Small changes, like increasing the learning rate from 0.0010 to 0.0020—meant the difference between a functioning agent and complete failure. This highlighted that successful RL requires systematic experimentation rather than intuition, as seemingly reasonable configurations can silently fail.
+
+**2. Exploration is Non-Negotiable:**
+Configurations that rushed through exploration (high epsilon decay like 1e-04 or 5e-04) either failed or underperformed. This taught me that in complex environments like Atari games, the agent needs substantial time to explore before committing to a policy. The best performer (Experiment 2) maintained the most exploration, reinforcing that it's better to explore longer than to exploit too early.
+
+#### Conclusion
+
+Through these 10 experiments, I learned that successful DQN training in Atari Bowling requires finding the "Goldilocks zone", learning rates between 0.0005-0.0012, gamma values above 0.93, and most critically, patient exploration strategies. The high variance in my results (±14.84) demonstrates that RL is fundamentally unstable, and what separates success from failure is often a careful balance of competing factors rather than any single "magic" hyperparameter.
 
 ---
 
