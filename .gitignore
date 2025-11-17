@@ -1,7 +1,0 @@
-venv/
-__pycache__/
-*.pyc
-models/
-tensorboard_logs/
-*.zip
-.DS_Store
