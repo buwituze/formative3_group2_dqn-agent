@@ -35,12 +35,28 @@ pip install -r requirements.txt
 
 ### Running the Code
 
-```bash
-# Train models with hyperparameter experiments
-python3 train.py
+Each team member has their own implementation in separate folders. To run experiments:
 
-# Play/evaluate a trained model
+```bash
+# Chol's experiments
+cd Chol
+python3 train.py
 python3 play.py [model_file.zip]
+
+# Annabelle's experiments (Jupyter notebook)
+cd annabelle_experiments
+# Open and run annabelle_experiment_train.ipynb
+
+# Benitha's experiments (Jupyter notebook)
+cd Benitha
+# Open and run Benitha_experiment.ipynb
+
+# Afsa's experiments (Jupyter notebook)
+cd afsa
+# Open and run Afsa_experiments.ipynb
+
+# Root level play script (uses Benitha's model by default)
+python3 play.py
 ```
 
 ## Hyperparameter Tuning Results
@@ -69,32 +85,32 @@ I conducted 10 systematic experiments focusing on the interaction between learni
 
 #### Key Insights from Hyperparameter Tuning
 
-**🚀 Performance Improvements:**
+**Successful Configurations:**
 
 - **Conservative Learning Rates (5e-05 to 1.5e-04)**: Experiments 1, 3, 4, 5, and 10 achieved the highest rewards (9-10 points), suggesting that moderate learning rates allow for stable learning without overshooting optimal policies.
 - **High Gamma Values (0.965-0.985)**: Strong discount factors helped agents focus on long-term rewards, crucial for strategic gameplay in Bowling.
 - **Balanced Batch Sizes**: Both small (32) and large (256) batch sizes worked well when paired with appropriate learning rates.
 
-**❌ Performance Degradation:**
+**Failed Configurations:**
 
 - **Excessive Learning Rates (>1.5e-03)**: Experiments 6 and 7 with learning rates of 2.5e-03 and 1.8e-03 completely failed (0 reward), indicating learning instability and policy collapse.
 - **Low Gamma Values (<0.93)**: Experiments 2, 7, and 10 with gamma ≤ 0.925 showed poor performance, suggesting short-sighted decision making.
 - **Suboptimal Exploration**: Very aggressive learning rates combined with standard exploration parameters led to premature convergence to poor policies.
 
-**🏆 Best Configuration (Experiment 3, 4, 5, 10):**
+**Optimal Configuration (Experiment 3, 4, 5, 10):**
 The optimal configurations consistently achieved perfect scores (10.0 ± 0.0):
 
-- **Learning Rate**: 5e-05 to 1.5e-04 (sweet spot for stable learning)
-- **Gamma**: 0.965-0.985 (high future reward consideration)
+- **Learning Rate**: 5e-05 to 1.5e-04
+- **Gamma**: 0.965-0.985
 - **Batch Size**: Flexible (32-256 both worked)
 - **Exploration**: Standard decay parameters (1.0 → 0.02-0.04)
 
-**Why This Configuration Works:**
+**Analysis:**
 
-1. **Stable Learning**: Conservative learning rates prevent catastrophic forgetting
-2. **Long-term Planning**: High gamma values encourage strategic thinking
-3. **Sufficient Exploration**: Balanced exploration-exploitation trade-off
-4. **Consistent Convergence**: Low variance in results indicates robust learning
+1. Conservative learning rates prevent catastrophic forgetting
+2. High gamma values encourage strategic thinking
+3. Balanced exploration-exploitation trade-off
+4. Low variance in results indicates robust learning
 
 ---
 
@@ -102,11 +118,11 @@ The optimal configurations consistently achieved perfect scores (10.0 ± 0.0):
 
 #### Experimental Focus
 
-I explored how learning rate aggressiveness and epsilon decay speed interact with high discount factors under a shorter 150,000-timestep budget. Each configuration reused the `CnnPolicy`, logged to the dedicated `annabelle_experiments/logs/` directory, and was evaluated over five deterministic episodes to quantify stability.
+I explored how learning rate aggressiveness and epsilon decay speed interact with high discount factors under a shorter 150,000-timestep budget. Each configuration reused the `CnnPolicy` and was evaluated over five deterministic episodes to quantify stability.
 
 #### Hyperparameter Configurations
 
-Team experiment indices (11-20) correspond to the local run folders `annabelle_experiments/logs/DQN_1` through `DQN_10`.
+Team experiment indices (11-20) correspond to experiments run in the `annabelle_experiments/` directory.
 
 | Exp ID | Learning Rate | Gamma | Batch Size | Initial ε | Final ε | ε Decay | Avg Reward | Std Dev |
 | ------ | ------------- | ----- | ---------- | --------- | ------- | ------- | ---------- | ------- |
@@ -123,36 +139,36 @@ Team experiment indices (11-20) correspond to the local run folders `annabelle_e
 
 #### Key Insights
 
-**🚀 Performance Highlights:**
+**Successful Experiments:**
 
 - Experiments 14 and 15 reached perfect 10.0 ± 0.0 scores by pairing conservative learning rates (≤9e-04) with high gammas (≥0.965), confirming that modest step sizes still converge quickly within 150k timesteps.
 - Experiment 11 scored 8.4 despite heavier variance, showing that slightly looser epsilon decay (0.0005) can still recover strong play when gamma stays near 0.99.
 
-**⚠️ Failure Modes:**
+**Failed Experiments:**
 
-- Aggressive learning rates of 0.0025 and 0.0038 (Experiments 16 and 20) collapsed to zero reward even with supportive gamma values, highlighting the sensitivity of DQN’s replay updates to step size.
+- Aggressive learning rates of 0.0025 and 0.0038 (Experiments 16 and 20) collapsed to zero reward even with supportive gamma values, highlighting the sensitivity of DQN's replay updates to step size.
 - Reducing gamma below 0.93 (Experiment 13) prevented the agent from planning across frames, resulting in a flat reward curve regardless of exploratory behaviour.
 
-**🏆 Best Configuration (Experiments 14 & 15):**
+**Optimal Configuration (Experiments 14 & 15):**
 Both runs delivered perfect 10.0 ± 0.0 scores using near-identical settings:
 
-- **Learning Rate**: 9e-04 and 5e-05 kept gradients stable without slowing convergence.
-- **Gamma**: 0.975 and 0.965 preserved long-horizon credit assignment needed for aiming follow-through.
-- **Batch Size**: 256 balanced replay diversity and GPU throughput.
-- **Exploration**: ε decays of 0.0002–0.0006 held a gradual shift from exploration to exploitation across the 150k steps.
+- **Learning Rate**: 9e-04 and 5e-05
+- **Gamma**: 0.975 and 0.965
+- **Batch Size**: 256
+- **Exploration**: ε decays of 0.0002–0.0006
 
-**Why These Settings Work:**
+**Analysis:**
 
-1. **Replay Stability**: Modest learning rates avoid overshooting when large 256-sample batches update the network.
-2. **Strategic Planning**: High gammas reward sequences that line up the ball, mirroring successful human play patterns.
-3. **Controlled Exploration**: The measured ε schedules keep the agent probing until it consistently locks onto the strike trajectory.
-4. **Short-Horizon Efficiency**: The configuration converges within 150k steps, matching the resource budget used for these experiments.
+1. Modest learning rates avoid overshooting when large 256-sample batches update the network
+2. High gammas reward sequences that line up the ball
+3. Controlled ε schedules keep the agent exploring until it finds effective strategies
+4. The configuration converges within 150k steps
 
-**📌 Practical Takeaways:**
+**Summary:**
 
 - Keep learning rates at or below 9e-04 and maintain gamma ≥0.965 to secure double-digit scores within a 150k-timestep training budget.
 - Slower epsilon schedules (decay ≤0.0006) improved score consistency, while faster decay (≥0.0008) correlated with higher variance in Experiments 18 and 19.
-- Experiment 14’s checkpoint (`dqn_model_exp4.zip` in `annabelle_experiments/`) is the most stable candidate for demonstration runs.
+- Experiment 14's checkpoint (`dqn_model_exp4.zip` in `annabelle_experiments/`) is the most stable candidate for demonstration runs.
 
 **Agent in play**
 
@@ -168,7 +184,12 @@ Final output of play script
 
 Link to demo (for the best model of my experimentation): [here](https://www.loom.com/share/06d7ccc8bbfb44ca9e213f9cb0354a61)
 
-![alt text](image.png)
+**Additional Resources:**
+- [Models and logs on Google Drive](https://drive.google.com/drive/folders/1IjhmOzE5Gffvw-5NRbzx4_xjry16RIAq?usp=sharing)
+
+![Best model evaluation](Benitha/image-1.png)
+
+![Best model evaluation continued](Benitha/image-2.png)
 
 #### Experimentation Design
 
@@ -230,23 +251,80 @@ Configurations that rushed through exploration (high epsilon decay like 1e-04 or
 
 #### Conclusion
 
-Through these 10 experiments, I learned that successful DQN training in Atari Bowling requires finding the "Goldilocks zone", learning rates between 0.0005-0.0012, gamma values above 0.93, and most critically, patient exploration strategies. The high variance in my results (±14.84) demonstrates that RL is fundamentally unstable, and what separates success from failure is often a careful balance of competing factors rather than any single "magic" hyperparameter.
+Through these 10 experiments, I learned that successful DQN training in Atari Bowling requires finding the optimal range of learning rates between 0.0005-0.0012, gamma values above 0.93, and most critically, patient exploration strategies. The high variance in my results (±14.84) demonstrates that RL is fundamentally unstable, and what separates success from failure is often a careful balance of competing factors rather than any single hyperparameter.
 
 ---
 
-### Member 4 - Experiments 31-40
+### Afsa Umutoniwase - Experiments 1-10
 
-_(Space reserved for Member 4's analysis)_
+[Demo video](https://www.youtube.com/watch?v=SaRvoNe4lu8)
 
-**Experimental Focus:** _(To be filled by Member 4)_
+#### Experimental Focus
+
+I conducted 10 systematic hyperparameter tuning experiments to understand how learning rate, discount factor (gamma), batch size, and epsilon decay parameters affect DQN performance in the Atari Bowling environment. Each experiment was trained for 30,000 timesteps using a CNN-based policy network, with evaluation performed over 5 deterministic episodes to assess stability and final performance.
 
 #### Hyperparameter Configurations
 
-_(Table to be added by Member 4)_
+| Exp ID | Learning Rate | Gamma | Batch Size | Initial ε | Final ε | ε Decay | Avg Reward | Std Dev |
+| ------ | ------------- | ----- | ---------- | --------- | ------- | ------- | ---------- | ------- |
+| 1      | 0.0003        | 0.95  | 32         | 1.0       | 0.01    | 5e-05   | 30.0       | 0.00    |
+| 2      | 0.001         | 0.99  | 128        | 1.0       | 0.05    | 2e-05   | 28.4       | 2.15    |
+| 3      | 0.0005        | 0.97  | 64         | 1.0       | 0.1     | 1e-04   | 0.0        | 0.00    |
+| 4      | 0.0025        | 0.9   | 32         | 1.0       | 0.02    | 1e-05   | 0.0        | 0.00    |
+| 5      | 0.0001        | 0.99  | 64         | 1.0       | 0.05    | 1e-04   | 7.0        | 1.41    |
+| 6      | 0.0015        | 0.92  | 128        | 1.0       | 0.1     | 5e-05   | 30.0       | 0.00    |
+| 7      | 0.0007        | 0.98  | 32         | 1.0       | 0.01    | 2e-05   | 30.0       | 0.00    |
+| 8      | 0.002         | 0.96  | 64         | 1.0       | 0.05    | 1e-04   | 18.6       | 3.21    |
+| 9      | 0.0004        | 0.93  | 128        | 1.0       | 0.1     | 5e-04   | 0.0        | 0.00    |
+| 10     | 0.0035        | 0.99  | 32         | 1.0       | 0.02    | 3e-05   | 5.2        | 2.68    |
+
+**Overall Performance:** Average Reward Across All Experiments: 14.92 and Standard Deviation: 13.84
 
 #### Key Insights
 
-_(Analysis to be added by Member 4)_
+**Successful Experiments:**
+
+- **Experiments 1, 6, and 7** achieved the highest rewards (30.0 ± 0.0), demonstrating perfect consistency. These configurations shared moderate learning rates (0.0003-0.0015) combined with balanced gamma values (0.92-0.98), showing that conservative-to-moderate learning rates with appropriate discount factors enable stable learning.
+
+- **Experiment 2** achieved strong performance (28.4 ± 2.15) with a higher learning rate (0.001) and high gamma (0.99), indicating that even slightly more aggressive learning can work when paired with strong long-term reward consideration.
+
+- **Experiment 8** showed moderate success (18.6 ± 3.21) despite a higher learning rate (0.002), suggesting that gamma values around 0.96 can partially compensate for learning rate instability, though with increased variance.
+
+**Failed Experiments:**
+
+- **Experiments 3, 4, and 9** completely failed (0.0 reward). Experiment 4's failure was due to the very high learning rate (0.0025) combined with low gamma (0.9), causing instability and short-sightedness. Experiment 3's failure despite moderate parameters suggests that the combination of epsilon decay (1e-04) and final epsilon (0.1) may have led to premature convergence. Experiment 9's failure with low learning rate (0.0004) but very fast epsilon decay (5e-04) indicates that exploration schedule matters critically.
+
+- **Experiment 10's** poor performance (5.2 ± 2.68) with the highest learning rate (0.0035) confirms that excessive learning rates cause significant instability, even when paired with high gamma (0.99).
+
+- **Experiment 5's** low performance (7.0 ± 1.41) with very low learning rate (0.0001) suggests that too conservative learning can also hinder performance, though it didn't completely fail.
+
+**Optimal Configuration (Experiments 1, 6, 7):**
+
+The optimal configurations consistently achieved perfect scores (30.0 ± 0.00):
+
+- **Learning Rate**: 0.0003-0.0015
+- **Gamma**: 0.92-0.98
+- **Batch Size**: Flexible (32-128 all worked)
+- **Exploration**: Slow epsilon decay (2e-05 to 5e-05) with low final epsilon (0.01-0.1)
+
+**Analysis:**
+
+1. Moderate learning rates prevent catastrophic forgetting while allowing meaningful updates
+2. Gamma values between 0.92-0.98 provide good long-term planning without over-emphasizing distant rewards
+3. Slow epsilon decay ensures sufficient exploration time before exploitation
+4. Low variance (0.00) indicates robust and reproducible learning
+
+**Summary:**
+
+- Learning rate is the most critical parameter - values between 0.0003-0.0015 consistently succeed, while rates above 0.002 lead to instability or failure.
+
+- Gamma values above 0.92 are essential, but extremely high values (0.99) don't guarantee success if paired with problematic learning rates.
+
+- Batch size appears less critical - successful experiments used 32, 64, and 128, suggesting computational efficiency can be prioritized.
+
+- Epsilon decay speed matters - slower decay (≤5e-05) correlated with better performance, while faster decay (≥1e-04) often led to premature convergence.
+
+- The high standard deviation (13.84) across all experiments highlights the sensitivity of DQN to hyperparameter choices, reinforcing the need for systematic experimentation.
 
 ---
 
@@ -254,19 +332,59 @@ _(Analysis to be added by Member 4)_
 
 ### Cross-Member Insights
 
-_(To be filled after all members complete their sections)_
+Across 40 experiments conducted by four team members, several consistent patterns emerged that highlight the critical hyperparameters for successful DQN training in Atari Bowling:
+
+**Learning Rate Consensus:**
+All four members independently identified that moderate learning rates are essential for stable learning. The optimal range consistently falls between 0.0003 and 0.0015, with slight variations depending on other hyperparameters. Chol found success with rates as low as 5e-05, while Benitha and Afsa achieved best results with rates around 0.0005-0.0015. Critically, all members observed that learning rates above 0.002 consistently led to training failure or severe instability.
+
+**Gamma Value Importance:**
+High gamma values (discount factors) proved universally important across all experiments. The consensus range is 0.92-0.99, with most successful configurations using gamma ≥ 0.93. Chol and Annabelle found optimal performance with gamma values between 0.965-0.985, while Benitha and Afsa achieved success with slightly lower values (0.92-0.98). All members observed that gamma values below 0.93 resulted in poor performance, suggesting that long-term reward planning is crucial for Bowling.
+
+**Batch Size Flexibility:**
+Unlike learning rate and gamma, batch size showed more flexibility. Successful experiments used batch sizes ranging from 32 to 256, indicating that computational efficiency can be prioritized without significantly impacting performance. Chol found both small (32) and large (256) batch sizes effective, while Benitha achieved best results with medium batch sizes (64).
+
+**Exploration Strategy:**
+All members emphasized the importance of controlled exploration. Slow epsilon decay rates (typically ≤ 5e-05) correlated with better performance across all experiments. Fast epsilon decay (≥ 1e-04) consistently led to premature convergence and poor policies. The exploration schedule appears to be particularly critical when paired with higher learning rates.
+
+**Training Duration Effects:**
+Experiments were conducted with different training budgets (30k, 150k, and 200k timesteps). Interestingly, Benitha and Afsa achieved strong results with only 30k timesteps, suggesting that with optimal hyperparameters, convergence can occur relatively quickly. However, longer training (150k-200k timesteps) allowed Chol and Annabelle to achieve perfect consistency (0.00 standard deviation) in their best configurations.
+
+**Failure Patterns:**
+Across all 40 experiments, two consistent failure modes emerged:
+1. High learning rates (>0.002) combined with any gamma value led to training instability
+2. Low gamma values (<0.93) combined with any learning rate resulted in poor performance
+
+These patterns suggest that both hyperparameters must be within their optimal ranges simultaneously for successful training.
 
 ### Best Overall Configuration
 
-_(To be determined from all 40 experiments)_
+Based on the comprehensive analysis of all 40 experiments, the best overall configuration combines insights from all team members:
+
+**Recommended Hyperparameters:**
+- **Learning Rate**: 0.0005 to 0.001 (optimal balance between convergence speed and stability)
+- **Gamma**: 0.95 to 0.98 (strong long-term planning without over-emphasizing distant rewards)
+- **Batch Size**: 32 to 128 (flexible based on computational resources)
+- **Epsilon Start**: 1.0
+- **Epsilon End**: 0.01 to 0.05
+- **Epsilon Decay**: 2e-05 to 5e-05 (slow, controlled exploration)
+- **Training Timesteps**: 30,000 minimum (optimal configurations can converge quickly)
+
+**Top Performing Experiments:**
+- **Benitha Experiment 2**: 35.4 reward (LR: 0.0005, Gamma: 0.95, Batch: 64)
+- **Afsa Experiments 1, 6, 7**: 30.0 reward (LR: 0.0003-0.0015, Gamma: 0.92-0.98)
+- **Chol Experiments 3, 4, 5**: 10.0 reward (LR: 5e-05 to 1.5e-04, Gamma: 0.965-0.985)
+- **Annabelle Experiments 14, 15**: 10.0 reward (LR: 5e-05 to 9e-04, Gamma: 0.965-0.975)
+
+**Key Takeaway:**
+The most robust configuration uses a learning rate around 0.0005-0.001, gamma between 0.95-0.98, and slow epsilon decay. This combination consistently produces stable, high-performing agents across different training budgets and evaluation metrics. The success of Benitha's Experiment 2 (35.4 reward) and the perfect consistency of Afsa's top experiments (30.0 ± 0.00) demonstrate that these hyperparameters provide both high performance and reliability.
 
 ## Agent Demonstration
 
 ### Video Demo
 
-🎥 **[Agent Playing Bowling]** _(Video to be added showing play.py execution)_
+[**Best Performing Agent - Benitha Experiment 2**](https://www.loom.com/share/06d7ccc8bbfb44ca9e213f9cb0354a61)
 
-The video demonstrates our best-performing agent (Experiment #X) playing Atari Bowling, showcasing:
+The video demonstrates our best-performing agent (Benitha's Experiment 2, reward: 35.4) playing Atari Bowling, showcasing:
 
 - Consistent ball control and aiming
 - Strategic pin targeting
@@ -274,9 +392,9 @@ The video demonstrates our best-performing agent (Experiment #X) playing Atari B
 
 ### Performance Metrics
 
-- **Average Score**: X.X ± X.X
-- **Training Time**: ~X hours per experiment
-- **Total Timesteps**: 200,000 per experiment
+- **Average Score**: 35.4 (Benitha Experiment 2)
+- **Training Time**: Varies by experiment (30k-200k timesteps)
+- **Total Timesteps**: 30,000-200,000 per experiment (varies by team member)
 
 ## Technical Implementation
 
@@ -289,11 +407,38 @@ The video demonstrates our best-performing agent (Experiment #X) playing Atari B
 
 ### Key Files
 
-- `train.py`: Main training script with hyperparameter experiments
-- `play.py`: Agent evaluation and visualization script
+**Root Level:**
+- `play.py`: Agent evaluation script (defaults to Benitha's model)
+- `requirements.txt`: Project dependencies
+
+**Team Member Folders:**
+
+**Chol/** - Python scripts:
+- `train.py`: Training script with hyperparameter experiments
+- `play.py`: Evaluation script
 - `hyperparameters.csv`: Experimental configurations
 - `results.csv`: Training and evaluation results
-- `requirements.txt`: Project dependencies
+- `requirements.txt`: Dependencies
+
+**annabelle_experiments/** - Jupyter notebook:
+- `annabelle_experiment_train.ipynb`: Training notebook
+- `play.py`: Evaluation script
+- `experiments_config.csv`: Experimental configurations
+- `dqn_model_exp4.zip`, `dqn_model_exp5.zip`: Trained models
+- `assets/annabelle-play-output.png`: Evaluation output
+
+**Benitha/** - Jupyter notebook:
+- `Benitha_experiment.ipynb`: Training notebook
+- `Benitha parameters for experiments.csv`: Experimental configurations
+- `benitha_experiment_results.csv`: Results data
+- `image-1.png`, `image-2.png`: Evaluation outputs
+- `README.md`: Additional information and Google Drive link
+
+**afsa/** - Jupyter notebook:
+- `Afsa_experiments.ipynb`: Training notebook
+- `play.py`: Evaluation script
+- `Afsa parameters for experiments.csv`: Experimental configurations
+- `experiment_results.csv`: Results data
 
 ## Conclusions
 
@@ -309,13 +454,39 @@ The systematic approach allowed us to identify optimal configurations and unders
 ## Repository Structure
 
 ```
-bowling_dqn/
-├── train.py              # Training script
-├── play.py               # Evaluation script
-├── requirements.txt      # Dependencies
-├── hyperparameters.csv   # Experiment configurations
-├── results.csv          # Results data
-├── models/              # Trained model files
-├── logs/                # Training logs
-└── README.md           # This file
+formative3_group2_dqn-agent/
+├── README.md                    # This file
+├── requirements.txt             # Root dependencies
+├── play.py                      # Root evaluation script
+├── image.png                    # Project image
+│
+├── Chol/                        # Chol's experiments (Python scripts)
+│   ├── train.py
+│   ├── play.py
+│   ├── hyperparameters.csv
+│   ├── results.csv
+│   └── requirements.txt
+│
+├── annabelle_experiments/       # Annabelle's experiments (Jupyter notebook)
+│   ├── annabelle_experiment_train.ipynb
+│   ├── play.py
+│   ├── experiments_config.csv
+│   ├── dqn_model_exp4.zip
+│   ├── dqn_model_exp5.zip
+│   └── assets/
+│       └── annabelle-play-output.png
+│
+├── Benitha/                     # Benitha's experiments (Jupyter notebook)
+│   ├── Benitha_experiment.ipynb
+│   ├── README.md
+│   ├── Benitha parameters for experiments.csv
+│   ├── benitha_experiment_results.csv
+│   ├── image-1.png
+│   └── image-2.png
+│
+└── afsa/                        # Afsa's experiments (Jupyter notebook)
+    ├── Afsa_experiments.ipynb
+    ├── play.py
+    ├── Afsa parameters for experiments.csv
+    └── experiment_results.csv
 ```

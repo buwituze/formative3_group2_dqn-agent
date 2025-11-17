@@ -1,0 +1,11 @@
+experiment,status,duration_minutes,log_dir,model_dir,best_mean_reward,num,lr,gamma,batch_size,epsilon_start,epsilon_end,epsilon_decay,error
+1,success,89.69135838333334,logs/exp_1_CnnPolicy,models/exp_1_CnnPolicy,30.0,1,0.0003,0.95,32,1.0,0.01,5e-05,
+2,success,127.26267276666668,logs/exp_2_CnnPolicy,models/exp_2_CnnPolicy,28.4,2,0.001,0.99,128,1.0,0.05,2e-05,
+3,success,112.32788566666666,logs/exp_3_CnnPolicy,models/exp_3_CnnPolicy,0.0,3,0.0005,0.97,64,1.0,0.1,0.0001,
+4,success,66.62269283333333,logs/exp_4_CnnPolicy,models/exp_4_CnnPolicy,0.0,4,0.0025,0.9,32,1.0,0.02,1e-05,
+5,success,93.13422886666667,logs/exp_5_CnnPolicy,models/exp_5_CnnPolicy,7.0,5,0.0001,0.99,64,1.0,0.05,0.0001,
+6,success,64.83156661666666,logs/exp_6_CnnPolicy,models/exp_6_CnnPolicy,30.0,6,0.0015,0.92,128,1.0,0.1,5e-05,
+7,success,73.28188831666667,logs/exp_7_CnnPolicy,models/exp_7_CnnPolicy,30.0,7,0.0007,0.98,32,1.0,0.01,2e-05,
+8,success,119.26629005,logs/exp_8_CnnPolicy,models/exp_8_CnnPolicy,18.6,8,0.002,0.96,64,1.0,0.05,0.0001,
+9,success,212.77133946666663,logs/exp_9_CnnPolicy,models/exp_9_CnnPolicy,0.0,9,0.0004,0.93,128,1.0,0.1,0.0005,
+10,success,95.43215678333333,logs/exp_10_CnnPolicy,models/exp_10_CnnPolicy,5.2,10,0.0035,0.99,32,1.0,0.02,3e-05,
