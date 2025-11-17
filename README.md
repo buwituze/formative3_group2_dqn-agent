@@ -167,7 +167,7 @@ Final output of play script
 
 Link to demo (for the best model of my experimentation): [here](https://www.loom.com/share/06d7ccc8bbfb44ca9e213f9cb0354a61)
 
-
+![alt text](image.png)
 
 #### Experimentation Design
 
