@@ -153,6 +153,14 @@ Both runs delivered perfect 10.0 ± 0.0 scores using near-identical settings:
 - Slower epsilon schedules (decay ≤0.0006) improved score consistency, while faster decay (≥0.0008) correlated with higher variance in Experiments 18 and 19.
 - Experiment 14’s checkpoint (`dqn_model_exp4.zip` in `annabelle_experiments/`) is the most stable candidate for demonstration runs.
 
+**Agent in play**
+
+[Link to demo video](https://youtu.be/5QNtg4qJGgs)
+
+Final output of play script
+
+![Annabelle agent evaluation output](annabelle_experiments/assets/annabelle-play-output.png)
+
 ---
 
 ### Benitha Uwituze Rutagengwa - Experiments 21-30
