@@ -45,7 +45,8 @@ python3 play.py [model_file.zip]
 
 ## Hyperparameter Tuning Results
 
-### Chol Daniel Deng Dau - Experiments 10
+### Chol Daniel Deng Dau - Experiments 1-10
+[Demo video](https://drive.google.com/file/d/1PfiozKjVIHi92jR-bkytLEgWrGpra5kt/view?usp=drive_link)
 
 #### Experimental Design
 
