@@ -165,9 +165,11 @@ Final output of play script
 
 ### Benitha Uwituze Rutagengwa - Experiments 21-30
 
-Link to best model performance (for my experiments): [here]()
+Link to demo (for the best model of my experimentation): [here](https://www.loom.com/share/06d7ccc8bbfb44ca9e213f9cb0354a61)
 
-#### Experimental Design
+
+
+#### Experimentation Design
 
 I explored 10 different hyperparameter combinations to understand how learning rate, discount factor (gamma), batch size, and exploration strategies affect DQN agent performance in the Atari Bowling environment. Each configuration was trained for 30,000 timesteps using a CNN-based policy network, with the goal of identifying which parameter combinations enable effective learning versus which cause training failure.
 
